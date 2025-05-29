@@ -21,7 +21,7 @@ const scheduleStockCheck = () => {
   const now = new Date();
   const next = new Date(now);
   next.setMinutes(Math.ceil(now.getMinutes() / 5) * 5);
-  next.setSeconds(5);
+  next.setSeconds(10);
   next.setMilliseconds(0);
 
   const delay = next - now;
