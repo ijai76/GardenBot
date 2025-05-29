@@ -45,3 +45,8 @@ client.once("ready", () => {
 });
 
 client.login(process.env.BOT_TOKEN);
+
+import server from "server";
+const { get, post } = server.router;
+
+server({ port: 8080 }, [get("/", (ctx) => "200 OK")]);
