@@ -1,8 +1,8 @@
 import fs from "fs";
 import { EmbedBuilder } from "discord.js";
 import emojiMap from "./utils/emojiMap.js";
-import { readFileSync } from 'fs';
-const roleMap = JSON.parse(readFileSync('./data/roleMap.json', 'utf-8'));
+import { readFileSync } from "fs";
+const roleMap = JSON.parse(readFileSync("./data/roleMap.json", "utf-8"));
 import commonItems from "./utils/commonItems.js";
 
 function getEmoji(itemId) {
@@ -23,8 +23,8 @@ function buildStockEmbed(stock) {
         `${getEmoji(item.item_id)} **${item.display_name}** x${item.quantity}`
     )
     .join("\n");
-  
-    const egg = stock.egg_stock
+
+  const egg = stock.egg_stock
     .map(
       (item) =>
         `${getEmoji(item.item_id)} **${item.display_name}** x${item.quantity}`
@@ -38,11 +38,15 @@ function buildStockEmbed(stock) {
       { name: "🌱 SEEDS STOCK", value: seed || "None", inline: true },
       { name: "🛠️ GEAR STOCK", value: gear || "None", inline: true },
       { name: "🐣 EGG STOCK", value: egg || "None", inline: true }
-    )
+    );
 }
 
 function generatePingLine(stock) {
-  const allItems = [...stock.seed_stock, ...stock.gear_stock, ...stock.egg_stock];
+  const allItems = [
+    ...stock.seed_stock,
+    ...stock.gear_stock,
+    ...stock.egg_stock,
+  ];
 
   const mentions = allItems
     .filter((i) => !commonItems.includes(i.item_id))
@@ -69,10 +73,12 @@ export async function checkStockAndNotify(client, channelId, newStock) {
   const lastStock = loadLastStock();
   if (!hasStockChanged(newStock, lastStock)) return;
 
+  // Save new stock immediately.
+  saveLastStock(newStock);
+
   const channel = await client.channels.fetch(channelId);
   const embed = buildStockEmbed(newStock);
   const pingLine = generatePingLine(newStock);
 
   await channel.send({ content: pingLine, embeds: [embed] });
-  saveLastStock(newStock);
 }
