@@ -29,5 +29,12 @@
   "mushroom": "ROLE_ID_MUSHROOM",
   "pepper": "ROLE_ID_PEPPER",
   "cacao": "ROLE_ID_CACAO",
-  "beanstalk": "ROLE_ID_BEANSTALK"
+  "beanstalk": "ROLE_ID_BEANSTALK",
+
+  "common_egg": "ROLE_ID_COMMON",
+  "uncommon_egg": "ROLE_ID_UNCOMMON",
+  "rare_egg": "ROLE_ID_RARE",
+  "legendary_egg": "ROLE_ID_LEGENDARY",
+  "mythical_egg": "ROLE_ID_MYTHICAL",
+  "bug_egg": "ROLE_ID_BUG"
 }

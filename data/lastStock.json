@@ -3,104 +3,97 @@
     {
       "item_id": "carrot",
       "display_name": "Carrot",
-      "quantity": 25,
-      "active_date": "2025-05-29T12:50:18.000Z",
-      "end_date": "2025-05-29T12:55:18.000Z"
+      "quantity": 11,
+      "active_date": "2025-05-29T15:20:18.000Z",
+      "end_date": "2025-05-29T15:25:18.000Z"
     },
     {
-      "item_id": "corn",
-      "display_name": "Corn",
-      "quantity": 2,
-      "active_date": "2025-05-29T12:50:18.000Z",
-      "end_date": "2025-05-29T12:55:18.000Z"
+      "item_id": "daffodil",
+      "display_name": "Daffodil",
+      "quantity": 5,
+      "active_date": "2025-05-29T15:20:18.000Z",
+      "end_date": "2025-05-29T15:25:18.000Z"
     },
     {
       "item_id": "strawberry",
       "display_name": "Strawberry",
       "quantity": 3,
-      "active_date": "2025-05-29T12:50:18.000Z",
-      "end_date": "2025-05-29T12:55:18.000Z"
+      "active_date": "2025-05-29T15:20:18.000Z",
+      "end_date": "2025-05-29T15:25:18.000Z"
     },
     {
       "item_id": "tomato",
       "display_name": "Tomato",
-      "quantity": 2,
-      "active_date": "2025-05-29T12:50:18.000Z",
-      "end_date": "2025-05-29T12:55:18.000Z"
+      "quantity": 1,
+      "active_date": "2025-05-29T15:20:18.000Z",
+      "end_date": "2025-05-29T15:25:18.000Z"
     },
     {
       "item_id": "orange_tulip",
       "display_name": "Orange Tulip",
-      "quantity": 15,
-      "active_date": "2025-05-29T12:50:18.000Z",
-      "end_date": "2025-05-29T12:55:18.000Z"
+      "quantity": 22,
+      "active_date": "2025-05-29T15:20:18.000Z",
+      "end_date": "2025-05-29T15:25:18.000Z"
     },
     {
       "item_id": "blueberry",
       "display_name": "Blueberry",
-      "quantity": 1,
-      "active_date": "2025-05-29T12:50:18.000Z",
-      "end_date": "2025-05-29T12:55:18.000Z"
+      "quantity": 4,
+      "active_date": "2025-05-29T15:20:18.000Z",
+      "end_date": "2025-05-29T15:25:18.000Z"
     }
   ],
   "gear_stock": [
     {
-      "item_id": "trowel",
-      "display_name": "Trowel",
-      "quantity": 2,
-      "active_date": "2025-05-29T12:50:18.000Z",
-      "end_date": "2025-05-29T12:55:18.000Z"
-    },
-    {
-      "item_id": "basic_sprinkler",
-      "display_name": "Basic Sprinkler",
+      "item_id": "watering_can",
+      "display_name": "Watering Can",
       "quantity": 3,
-      "active_date": "2025-05-29T12:50:18.000Z",
-      "end_date": "2025-05-29T12:55:18.000Z"
+      "active_date": "2025-05-29T15:20:18.000Z",
+      "end_date": "2025-05-29T15:25:18.000Z"
     },
     {
       "item_id": "favorite_tool",
       "display_name": "Favorite Tool",
-      "quantity": 1,
-      "active_date": "2025-05-29T12:50:18.000Z",
-      "end_date": "2025-05-29T12:55:18.000Z"
-    },
-    {
-      "item_id": "watering_can",
-      "display_name": "Watering Can",
-      "quantity": 1,
-      "active_date": "2025-05-29T12:50:18.000Z",
-      "end_date": "2025-05-29T12:55:18.000Z"
+      "quantity": 3,
+      "active_date": "2025-05-29T15:20:18.000Z",
+      "end_date": "2025-05-29T15:25:18.000Z"
     },
     {
       "item_id": "recall_wrench",
       "display_name": "Recall Wrench",
-      "quantity": 1,
-      "active_date": "2025-05-29T12:50:18.000Z",
-      "end_date": "2025-05-29T12:55:18.000Z"
+      "quantity": 2,
+      "active_date": "2025-05-29T15:20:18.000Z",
+      "end_date": "2025-05-29T15:25:18.000Z"
+    },
+    {
+      "item_id": "trowel",
+      "display_name": "Trowel",
+      "quantity": 3,
+      "active_date": "2025-05-29T15:20:18.000Z",
+      "end_date": "2025-05-29T15:25:18.000Z"
     }
   ],
   "egg_stock": [
     {
-      "item_id": "common_egg",
-      "display_name": "Common Egg",
+      "item_id": "rare_egg",
+      "display_name": "Rare Egg",
       "quantity": 1,
-      "active_date": "2025-05-29T12:30:17.000Z",
-      "end_date": "2025-05-29T13:00:17.000Z"
+      "active_date": "2025-05-29T15:00:18.000Z",
+      "end_date": "2025-05-29T15:30:18.000Z"
+    },
+    {
+      "item_id": "legendary_egg",
+      "display_name": "Legendary Egg",
+      "quantity": 1,
+      "active_date": "2025-05-29T15:00:18.000Z",
+      "end_date": "2025-05-29T15:30:18.000Z"
     },
     {
       "item_id": "common_egg",
       "display_name": "Common Egg",
       "quantity": 1,
-      "active_date": "2025-05-29T12:30:17.000Z",
-      "end_date": "2025-05-29T13:00:17.000Z"
-    },
-    {
-      "item_id": "common_egg",
-      "display_name": "Common Egg",
-      "quantity": 1,
-      "active_date": "2025-05-29T12:30:17.000Z",
-      "end_date": "2025-05-29T13:00:17.000Z"
+      "active_date": "2025-05-29T15:00:18.000Z",
+      "end_date": "2025-05-29T15:30:18.000Z"
     }
   ]
 }

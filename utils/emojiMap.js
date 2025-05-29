@@ -36,4 +36,12 @@ export default {
 
   // Extras
   lightning_rod: "<:lightning_rod:1377452413388329081>",
+
+  // Eggs
+  common_egg: "<:common_egg:1377667239280382072>",
+  uncommon_egg: "<:uncommon_egg:1377667241557885139>",
+  rare_egg: "<:rare_egg:1377667237099470990>",
+  legendary_egg: "<:legendary_egg:1377667235170095124>",
+  mythical_egg: "<:mythical_egg:1377667243458166784>",
+  bug_egg: "<:bug_egg:1377667232469094411>",
 };

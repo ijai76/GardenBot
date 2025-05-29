@@ -23,18 +23,26 @@ function buildStockEmbed(stock) {
         `${getEmoji(item.item_id)} **${item.display_name}** x${item.quantity}`
     )
     .join("\n");
+  
+    const egg = stock.egg_stock
+    .map(
+      (item) =>
+        `${getEmoji(item.item_id)} **${item.display_name}** x${item.quantity}`
+    )
+    .join("\n");
 
   return new EmbedBuilder()
     .setColor(0x2ecc71)
     .setAuthor({ name: "🌦️ GardenBot • Grow a Garden Stocks" })
     .addFields(
       { name: "🌱 SEEDS STOCK", value: seed || "None", inline: true },
-      { name: "🛠️ GEAR STOCK", value: gear || "None", inline: true }
+      { name: "🛠️ GEAR STOCK", value: gear || "None", inline: true },
+      { name: "🐣 EGG STOCK", value: egg || "None", inline: true }
     )
 }
 
 function generatePingLine(stock) {
-  const allItems = [...stock.seed_stock, ...stock.gear_stock];
+  const allItems = [...stock.seed_stock, ...stock.gear_stock, ...stock.egg_stock];
 
   const mentions = allItems
     .filter((i) => !commonItems.includes(i.item_id))
