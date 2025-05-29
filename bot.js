@@ -1,5 +1,5 @@
 import { Client, GatewayIntentBits } from "discord.js";
-import { checkStockAndNotify } from "./checkStock.js";
+import { checkStockAndNotify } from "./src/checkStock.js";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
 dotenv.config();
@@ -21,8 +21,8 @@ const scheduleStockCheck = () => {
   const now = new Date();
   const next = new Date(now);
   next.setMinutes(Math.ceil(now.getMinutes() / 5) * 5);
-  next.setSeconds(0);
-  next.setMilliseconds(100);
+  next.setSeconds(5);
+  next.setMilliseconds(0);
 
   const delay = next - now;
   setTimeout(
