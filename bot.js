@@ -30,7 +30,7 @@ const scheduleStockCheck = () => {
   const delay = next - now;
   setTimeout(
     async () => {
-      const bufferMs = 9000;
+      const bufferMs = 10000;
       await new Promise((r) => setTimeout(r, bufferMs));
 
       try {
