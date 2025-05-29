@@ -1,0 +1,106 @@
+{
+  "seed_stock": [
+    {
+      "item_id": "carrot",
+      "display_name": "Carrot",
+      "quantity": 17,
+      "active_date": "2025-05-29T11:05:18.000Z",
+      "end_date": "2025-05-29T11:10:18.000Z"
+    },
+    {
+      "item_id": "daffodil",
+      "display_name": "Daffodil",
+      "quantity": 6,
+      "active_date": "2025-05-29T11:05:18.000Z",
+      "end_date": "2025-05-29T11:10:18.000Z"
+    },
+    {
+      "item_id": "strawberry",
+      "display_name": "Strawberry",
+      "quantity": 6,
+      "active_date": "2025-05-29T11:05:18.000Z",
+      "end_date": "2025-05-29T11:10:18.000Z"
+    },
+    {
+      "item_id": "tomato",
+      "display_name": "Tomato",
+      "quantity": 3,
+      "active_date": "2025-05-29T11:05:18.000Z",
+      "end_date": "2025-05-29T11:10:18.000Z"
+    },
+    {
+      "item_id": "orange_tulip",
+      "display_name": "Orange Tulip",
+      "quantity": 10,
+      "active_date": "2025-05-29T11:05:18.000Z",
+      "end_date": "2025-05-29T11:10:18.000Z"
+    },
+    {
+      "item_id": "blueberry",
+      "display_name": "Blueberry",
+      "quantity": 2,
+      "active_date": "2025-05-29T11:05:18.000Z",
+      "end_date": "2025-05-29T11:10:18.000Z"
+    }
+  ],
+  "gear_stock": [
+    {
+      "item_id": "advanced_sprinkler",
+      "display_name": "Advanced Sprinkler",
+      "quantity": 2,
+      "active_date": "2025-05-29T11:05:18.000Z",
+      "end_date": "2025-05-29T11:10:18.000Z"
+    },
+    {
+      "item_id": "trowel",
+      "display_name": "Trowel",
+      "quantity": 1,
+      "active_date": "2025-05-29T11:05:18.000Z",
+      "end_date": "2025-05-29T11:10:18.000Z"
+    },
+    {
+      "item_id": "watering_can",
+      "display_name": "Watering Can",
+      "quantity": 1,
+      "active_date": "2025-05-29T11:05:18.000Z",
+      "end_date": "2025-05-29T11:10:18.000Z"
+    },
+    {
+      "item_id": "favorite_tool",
+      "display_name": "Favorite Tool",
+      "quantity": 3,
+      "active_date": "2025-05-29T11:05:18.000Z",
+      "end_date": "2025-05-29T11:10:18.000Z"
+    },
+    {
+      "item_id": "recall_wrench",
+      "display_name": "Recall Wrench",
+      "quantity": 3,
+      "active_date": "2025-05-29T11:05:18.000Z",
+      "end_date": "2025-05-29T11:10:18.000Z"
+    }
+  ],
+  "egg_stock": [
+    {
+      "item_id": "uncommon_egg",
+      "display_name": "Uncommon Egg",
+      "quantity": 1,
+      "active_date": "2025-05-29T11:00:17.000Z",
+      "end_date": "2025-05-29T11:30:17.000Z"
+    },
+    {
+      "item_id": "common_egg",
+      "display_name": "Common Egg",
+      "quantity": 1,
+      "active_date": "2025-05-29T11:00:17.000Z",
+      "end_date": "2025-05-29T11:30:17.000Z"
+    },
+    {
+      "item_id": "common_egg",
+      "display_name": "Common Egg",
+      "quantity": 1,
+      "active_date": "2025-05-29T11:00:17.000Z",
+      "end_date": "2025-05-29T11:30:17.000Z"
+    }
+  ]
+}
