@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   // Seeds / Crops
   carrot: "<:carrot:1377452529360568320>",
   strawberry: "<:strawberry:1377452530711134338>",

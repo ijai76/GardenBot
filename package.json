@@ -1,5 +1,6 @@
 {
   "name": "gardenbot",
+  "type": "module",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -12,6 +13,6 @@
   "dependencies": {
     "discord.js": "^14.19.3",
     "dotenv": "^16.5.0",
-    "node-fetch": "^2.7.0"
+    "node-fetch": "^3.3.2"
   }
 }

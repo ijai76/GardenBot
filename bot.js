@@ -1,7 +1,7 @@
-const { Client, GatewayIntentBits } = require("discord.js");
-const { checkStockAndNotify } = require("./stock-checker");
-const fetch = require("node-fetch");
-const dotenv = require("dotenv");
+import { Client, GatewayIntentBits } from "discord.js";
+import { checkStockAndNotify } from "./checkStock.js";
+import fetch from "node-fetch";
+import dotenv from "dotenv";
 dotenv.config();
 
 const client = new Client({

@@ -1,7 +1,9 @@
-const fs = require("fs");
-const { EmbedBuilder } = require("discord.js");
-const emojiMap = require("./utils/emojiMap");
-const roleMap = require("./data/roleMap.json");
+import fs from "fs";
+import { EmbedBuilder } from "discord.js";
+import emojiMap from "./utils/emojiMap.js";
+import { readFileSync } from 'fs';
+const roleMap = JSON.parse(readFileSync('./data/roleMap.json', 'utf-8'));
+import commonItems from "./utils/commonItems.js";
 
 function getEmoji(itemId) {
   return emojiMap[itemId] || "📦";
@@ -29,18 +31,16 @@ function buildStockEmbed(stock) {
       { name: "🌱 SEEDS STOCK", value: seed || "None", inline: true },
       { name: "🛠️ GEAR STOCK", value: gear || "None", inline: true }
     )
-    .setFooter({ text: "https://imgur.com/" });
 }
 
 function generatePingLine(stock) {
   const allItems = [...stock.seed_stock, ...stock.gear_stock];
-  const commonItems = require("./utils/commonItems");
 
   const mentions = allItems
     .filter((i) => !commonItems.includes(i.item_id))
     .map((i) => (roleMap[i.item_id] ? `<@&${roleMap[i.item_id]}>` : null))
-
     .filter(Boolean);
+
   return mentions.join(" ");
 }
 
@@ -57,16 +57,14 @@ function saveLastStock(stock) {
   fs.writeFileSync("./data/lastStock.json", JSON.stringify(stock, null, 2));
 }
 
-module.exports = {
-  checkStockAndNotify: async (client, channelId, newStock) => {
-    const lastStock = loadLastStock();
-    if (!hasStockChanged(newStock, lastStock)) return;
+export async function checkStockAndNotify(client, channelId, newStock) {
+  const lastStock = loadLastStock();
+  if (!hasStockChanged(newStock, lastStock)) return;
 
-    const channel = await client.channels.fetch(channelId);
-    const embed = buildStockEmbed(newStock);
-    const pingLine = generatePingLine(newStock);
+  const channel = await client.channels.fetch(channelId);
+  const embed = buildStockEmbed(newStock);
+  const pingLine = generatePingLine(newStock);
 
-    await channel.send({ content: pingLine, embeds: [embed] });
-    saveLastStock(newStock);
-  },
-};
+  await channel.send({ content: pingLine, embeds: [embed] });
+  saveLastStock(newStock);
+}

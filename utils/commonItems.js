@@ -1,4 +1,4 @@
-module.exports = [
+export default [
   "carrot",
   "corn",
   "daffodil",
@@ -6,4 +6,5 @@ module.exports = [
   "tomato",
   "blueberry",
   "watering_can",
+  "orange_tulip",
 ];
