@@ -1,12 +1,46 @@
-import fs from "fs";
 import { EmbedBuilder } from "discord.js";
-import emojiMap from "./utils/emojiMap.js";
 import { readFileSync } from "fs";
-const roleMap = JSON.parse(readFileSync("./data/roleMap.json", "utf-8"));
+import db from "./db/stockDB.js";
+import emojiMap from "./utils/emojiMap.js";
 import commonItems from "./utils/commonItems.js";
+const roleMap = JSON.parse(readFileSync("./src/data/roleMap.json", "utf-8"));
 
 function getEmoji(itemId) {
   return emojiMap[itemId] || "📦";
+}
+
+function getCurrentStockFromDB() {
+  const rows = db.prepare("SELECT * FROM current_stock").all();
+
+  const seed_stock = rows.filter((r) => r.type === "seed");
+  const gear_stock = rows.filter((r) => r.type === "gear");
+  const egg_stock = rows.filter((r) => r.type === "egg");
+
+  return {
+    seed_stock,
+    gear_stock,
+    egg_stock,
+  };
+}
+
+function updateStockInDB(newStock) {
+  const deleteStmt = db.prepare("DELETE FROM current_stock");
+  const insertStmt = db.prepare(`
+    INSERT INTO current_stock (type, item_id, display_name, quantity)
+    VALUES (@type, @item_id, @display_name, @quantity)
+  `);
+
+  const insertMany = db.transaction((stock) => {
+    deleteStmt.run(); // Clear old stock
+
+    for (const s of stock.seed_stock) insertStmt.run({ ...s, type: "seed" });
+
+    for (const g of stock.gear_stock) insertStmt.run({ ...g, type: "gear" });
+
+    for (const e of stock.egg_stock) insertStmt.run({ ...e, type: "egg" });
+  });
+
+  insertMany(newStock);
 }
 
 function buildStockEmbed(stock) {
@@ -60,14 +94,8 @@ function hasStockChanged(newStock, oldStock) {
   return JSON.stringify(newStock) !== JSON.stringify(oldStock);
 }
 
-function loadLastStock() {
-  if (!fs.existsSync("./data/lastStock.json")) return null;
-  return JSON.parse(fs.readFileSync("./data/lastStock.json", "utf-8"));
-}
-
-function saveLastStock(stock) {
-  fs.writeFileSync("./data/lastStock.json", JSON.stringify(stock, null, 2));
-}
+const loadLastStock = getCurrentStockFromDB;
+const saveLastStock = updateStockInDB;
 
 export async function checkStockAndNotify(client, channelId, newStock) {
   const lastStock = loadLastStock();

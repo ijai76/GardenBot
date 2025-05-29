@@ -1,5 +1,8 @@
+// bot.js
 import { Client, GatewayIntentBits } from "discord.js";
+import { updateLastFetchStatus } from "./src/statusTracker.js";
 import { checkStockAndNotify } from "./src/checkStock.js";
+import { startStatusServer } from "./src/server.js";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
 dotenv.config();
@@ -21,7 +24,7 @@ const scheduleStockCheck = () => {
   const now = new Date();
   const next = new Date(now);
   next.setMinutes(Math.ceil(now.getMinutes() / 5) * 5);
-  next.setSeconds(5);
+  next.setSeconds(8);
   next.setMilliseconds(0);
 
   const delay = next - now;
@@ -30,13 +33,15 @@ const scheduleStockCheck = () => {
       try {
         const stock = await fetchLiveStock();
         await checkStockAndNotify(client, CHANNEL_ID, stock);
+        updateLastFetchStatus(true, "Stock fetched and notified.");
       } catch (err) {
         console.error("❌ Error fetching or notifying stock:", err);
+        updateLastFetchStatus(false, err.message);
       }
-      scheduleStockCheck(); // 🔁 Reschedule
+      scheduleStockCheck();
     },
     delay > 0 ? delay : 5 * 60 * 1000
-  ); // Fallback
+  );
 };
 
 client.once("ready", () => {
@@ -46,12 +51,4 @@ client.once("ready", () => {
 
 client.login(process.env.BOT_TOKEN);
 
-import server from "server";
-const { get, post } = server.router;
-
-server({ port: 8080 }, [
-  get("/", (ctx) => "200 OK"),
-  post("/", (ctx) => {
-    return "ok";
-  }),
-]);
+startStatusServer(8080);
