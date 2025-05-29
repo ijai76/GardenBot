@@ -30,6 +30,9 @@ const scheduleStockCheck = () => {
   const delay = next - now;
   setTimeout(
     async () => {
+      const bufferMs = 5000; // 5-second buffer to avoid premature fetching
+      await new Promise((r) => setTimeout(r, bufferMs));
+
       try {
         const stock = await fetchLiveStock();
         await checkStockAndNotify(client, CHANNEL_ID, stock);
@@ -38,6 +41,7 @@ const scheduleStockCheck = () => {
         console.error("❌ Error fetching or notifying stock:", err);
         updateLastFetchStatus(false, err.message);
       }
+
       scheduleStockCheck();
     },
     delay > 0 ? delay : 5 * 60 * 1000
