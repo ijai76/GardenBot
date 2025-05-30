@@ -10,8 +10,8 @@ db.exec(`
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     type TEXT NOT NULL,
     item_id TEXT NOT NULL,
-    display_name TEXT NOT NULL,
-    quantity INTEGER NOT NULL
+    name TEXT NOT NULL,
+    value INTEGER NOT NULL
   );
 `);
 

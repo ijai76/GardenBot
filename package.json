@@ -12,9 +12,14 @@
   "description": "",
   "dependencies": {
     "better-sqlite3": "^11.10.0",
+    "blessed": "^0.1.81",
     "discord.js": "^14.19.3",
     "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "fs": "^0.0.1-security",
     "node-fetch": "^3.3.2",
+    "os": "^0.1.2",
+    "path": "^0.12.7",
     "server": "^1.0.41"
   }
 }
