@@ -17,14 +17,10 @@ function getEmoji(itemId) {
 function getCurrentStockFromDB() {
   const rows = db.prepare("SELECT * FROM current_stock").all();
 
-  const seedsStock = rows.filter((r) => r.type === "seed");
-  const gearStock = rows.filter((r) => r.type === "gear");
-  const eggStock = rows.filter((r) => r.type === "egg");
-
   return {
-    seedsStock,
-    gearStock,
-    eggStock,
+    seedsStock: rows.filter((r) => r.type === "seed"),
+    gearStock: rows.filter((r) => r.type === "gear"),
+    eggStock: rows.filter((r) => r.type === "egg"),
   };
 }
 
@@ -40,10 +36,8 @@ function updateStockInDB(newStock) {
 
     for (const s of stock.seedsStock || [])
       insertStmt.run({ ...s, type: "seed" });
-
     for (const g of stock.gearStock || [])
       insertStmt.run({ ...g, type: "gear" });
-
     for (const e of stock.eggStock || []) insertStmt.run({ ...e, type: "egg" });
   });
 
@@ -64,8 +58,13 @@ function updateNightBloodStockInDB(newStock) {
   const deleteNight = db.prepare("DELETE FROM night_stock");
   const deleteBlood = db.prepare("DELETE FROM blood_stock");
 
-  const insertStmt = db.prepare(`
-    INSERT INTO ${"${type}_stock"} (type, item_id, name, value)
+  const insertNightStmt = db.prepare(`
+    INSERT INTO night_stock (type, item_id, name, value)
+    VALUES (@type, @item_id, @name, @value)
+  `);
+
+  const insertBloodStmt = db.prepare(`
+    INSERT INTO blood_stock (type, item_id, name, value)
     VALUES (@type, @item_id, @name, @value)
   `);
 
@@ -74,10 +73,10 @@ function updateNightBloodStockInDB(newStock) {
     deleteBlood.run();
 
     for (const item of stock.nightStock || [])
-      insertStmt.run({ ...item, type: "night" });
+      insertNightStmt.run({ ...item, type: "night" });
 
     for (const item of stock.bloodStock || [])
-      insertStmt.run({ ...item, type: "blood" });
+      insertBloodStmt.run({ ...item, type: "blood" });
   });
 
   insertMany(newStock);
@@ -112,6 +111,17 @@ function generatePingLine(stock) {
     ...(stock.gearStock || []),
     ...(stock.eggStock || []),
   ];
+
+  const mentions = allItems
+    .filter((i) => !commonItems.includes(i.item_id))
+    .map((i) => (roleMap[i.item_id] ? `<@&${roleMap[i.item_id]}>` : null))
+    .filter(Boolean);
+
+  return mentions.join(" ");
+}
+
+function generateNightBloodPingLine(stock) {
+  const allItems = [...(stock.nightStock || []), ...(stock.bloodStock || [])];
 
   const mentions = allItems
     .filter((i) => !commonItems.includes(i.item_id))
@@ -210,7 +220,7 @@ export async function checkNightBloodStockAndNotify(
 
   const channel = await client.channels.fetch(channelId);
   const embed = buildNightBloodStockEmbed(newStock);
-  const pingLine = ""; // Optional: Add pings if needed
+  const pingLine = generateNightBloodPingLine(newStock);
 
   await channel.send({ content: pingLine, embeds: [embed] });
 }

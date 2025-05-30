@@ -28,5 +28,19 @@
   "rare_egg": "1377683790310150144",
   "legendary_egg": "1377683793212604416",
   "mythical_egg": "1377683795477528676",
-  "bug_egg": "1377683820442288238"
+  "bug_egg": "1377683820442288238",
+
+  "blood_banana": "ROLE_ID_HERE",
+  "moon_melon": "ROLE_ID_HERE",
+  "mysterious_crate": "ROLE_ID_HERE",
+  "blood_kiwi": "ROLE_ID_HERE",
+  "blood_hedgehog": "ROLE_ID_HERE",
+  "blood_owl": "ROLE_ID_HERE",
+  "night_egg": "ROLE_ID_HERE",
+  "night_seed_pack": "ROLE_ID_HERE",
+  "twilight_crate": "ROLE_ID_HERE",
+  "star_caller": "ROLE_ID_HERE",
+  "moon_cat": "ROLE_ID_HERE",
+  "celestiberry": "ROLE_ID_HERE",
+  "moon_mango": "ROLE_ID_HERE"
 }
