@@ -13,7 +13,7 @@ const client = new Client({
 const CHANNEL_ID = process.env.CHANNEL_ID;
 
 const fetchLiveStock = async () => {
-  const res = await fetch("http://localhost:1000/api/stock/GetStock");
+  const res = await fetch("http://localhost:3000/api/stock/GetStock");
   if (!res.ok) throw new Error(`API error: ${res.statusText}`);
   const stock = await res.json();
   return stock;

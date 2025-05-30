@@ -6,6 +6,10 @@ import commonItems from "./utils/commonItems.js";
 
 const roleMap = JSON.parse(readFileSync("./src/data/roleMap.json", "utf-8"));
 
+function normalizeName(name) {
+  return name.toLowerCase().replace(/\s+/g, "_");
+}
+
 function getEmoji(itemId) {
   return emojiMap[itemId] || "📦";
 }
@@ -40,7 +44,8 @@ function updateStockInDB(newStock) {
     for (const g of stock.gearStock || [])
       insertStmt.run({ ...g, type: "gear" });
 
-    for (const e of stock.eggStock || []) insertStmt.run({ ...e, type: "egg" });
+    for (const e of stock.eggStock || [])
+      insertStmt.run({ ...e, type: "egg" });
   });
 
   insertMany(newStock);
@@ -88,11 +93,29 @@ function hasStockChanged(newStock, oldStock) {
   return JSON.stringify(newStock) !== JSON.stringify(oldStock);
 }
 
+function normalizeIncomingStock(stock) {
+  const normalize = (items, type) =>
+    (items || []).map((i) => ({
+      type,
+      item_id: normalizeName(i.name),
+      name: i.name,
+      value: i.value,
+    }));
+
+  return {
+    seedsStock: normalize(stock.seedsStock, "seed"),
+    gearStock: normalize(stock.gearStock, "gear"),
+    eggStock: normalize(stock.eggStock, "egg"),
+  };
+}
+
 const loadLastStock = getCurrentStockFromDB;
 const saveLastStock = updateStockInDB;
 
-export async function checkStockAndNotify(client, channelId, newStock) {
+export async function checkStockAndNotify(client, channelId, rawNewStock) {
+  const newStock = normalizeIncomingStock(rawNewStock);
   const lastStock = loadLastStock();
+
   if (!hasStockChanged(newStock, lastStock)) return;
 
   saveLastStock(newStock);
