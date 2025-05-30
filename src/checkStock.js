@@ -3,6 +3,7 @@ import { readFileSync } from "fs";
 import db from "./db/stockDB.js";
 import emojiMap from "./utils/emojiMap.js";
 import commonItems from "./utils/commonItems.js";
+
 const roleMap = JSON.parse(readFileSync("./src/data/roleMap.json", "utf-8"));
 
 function getEmoji(itemId) {
@@ -12,74 +13,67 @@ function getEmoji(itemId) {
 function getCurrentStockFromDB() {
   const rows = db.prepare("SELECT * FROM current_stock").all();
 
-  const seed_stock = rows.filter((r) => r.type === "seed");
-  const gear_stock = rows.filter((r) => r.type === "gear");
-  const egg_stock = rows.filter((r) => r.type === "egg");
+  const seedsStock = rows.filter((r) => r.type === "seed");
+  const gearStock = rows.filter((r) => r.type === "gear");
+  const eggStock = rows.filter((r) => r.type === "egg");
 
   return {
-    seed_stock,
-    gear_stock,
-    egg_stock,
+    seedsStock,
+    gearStock,
+    eggStock,
   };
 }
 
 function updateStockInDB(newStock) {
   const deleteStmt = db.prepare("DELETE FROM current_stock");
   const insertStmt = db.prepare(`
-    INSERT INTO current_stock (type, item_id, display_name, quantity)
-    VALUES (@type, @item_id, @display_name, @quantity)
+    INSERT INTO current_stock (type, item_id, name, value)
+    VALUES (@type, @item_id, @name, @value)
   `);
 
   const insertMany = db.transaction((stock) => {
     deleteStmt.run(); // Clear old stock
 
-    for (const s of stock.seed_stock) insertStmt.run({ ...s, type: "seed" });
+    for (const s of stock.seedsStock || [])
+      insertStmt.run({ ...s, type: "seed" });
 
-    for (const g of stock.gear_stock) insertStmt.run({ ...g, type: "gear" });
+    for (const g of stock.gearStock || [])
+      insertStmt.run({ ...g, type: "gear" });
 
-    for (const e of stock.egg_stock) insertStmt.run({ ...e, type: "egg" });
+    for (const e of stock.eggStock || []) insertStmt.run({ ...e, type: "egg" });
   });
 
   insertMany(newStock);
 }
 
 function buildStockEmbed(stock) {
-  const seed = stock.seed_stock
-    .map(
-      (item) =>
-        `${getEmoji(item.item_id)} **${item.display_name}** x${item.quantity}`
-    )
+  const seeds = (stock.seedsStock || [])
+    .map((item) => `${getEmoji(item.item_id)} **${item.name}** x${item.value}`)
     .join("\n");
 
-  const gear = stock.gear_stock
-    .map(
-      (item) =>
-        `${getEmoji(item.item_id)} **${item.display_name}** x${item.quantity}`
-    )
+  const gear = (stock.gearStock || [])
+    .map((item) => `${getEmoji(item.item_id)} **${item.name}** x${item.value}`)
     .join("\n");
 
-  const egg = stock.egg_stock
-    .map(
-      (item) =>
-        `${getEmoji(item.item_id)} **${item.display_name}** x${item.quantity}`
-    )
+  const egg = (stock.eggStock || [])
+    .map((item) => `${getEmoji(item.item_id)} **${item.name}** x${item.value}`)
     .join("\n");
 
   return new EmbedBuilder()
     .setColor(0x2ecc71)
     .setAuthor({ name: "🌦️ GardenBot • Grow a Garden Stocks" })
     .addFields(
-      { name: "🌱 SEEDS STOCK", value: seed || "None", inline: true },
-      { name: "🛠️ GEAR STOCK", value: gear || "None", inline: true },
-      { name: "🐣 EGG STOCK", value: egg || "None", inline: true }
+      { name: "🌱 SEEDS STOCK", value: seeds || "None", inline: true },
+      { name: "🚲 GEAR STOCK", value: gear || "None", inline: true },
+      { name: "👣 EGG STOCK", value: egg || "None", inline: true }
     );
 }
 
 function generatePingLine(stock) {
   const allItems = [
-    ...stock.seed_stock,
-    ...stock.gear_stock,
-    ...stock.egg_stock,
+    ...(stock.seedsStock || []),
+    ...(stock.gearStock || []),
+    ...(stock.eggStock || []),
   ];
 
   const mentions = allItems
@@ -101,7 +95,6 @@ export async function checkStockAndNotify(client, channelId, newStock) {
   const lastStock = loadLastStock();
   if (!hasStockChanged(newStock, lastStock)) return;
 
-  // Save new stock immediately.
   saveLastStock(newStock);
 
   const channel = await client.channels.fetch(channelId);

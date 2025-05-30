@@ -2,7 +2,6 @@
 import { Client, GatewayIntentBits } from "discord.js";
 import { updateLastFetchStatus } from "./src/statusTracker.js";
 import { checkStockAndNotify } from "./src/checkStock.js";
-import { startStatusServer } from "./src/server.js";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
 dotenv.config();
@@ -14,7 +13,7 @@ const client = new Client({
 const CHANNEL_ID = process.env.CHANNEL_ID;
 
 const fetchLiveStock = async () => {
-  const res = await fetch("https://api.joshlei.com/v1/growagarden/stock");
+  const res = await fetch("http://localhost:1000/api/stock/GetStock");
   if (!res.ok) throw new Error(`API error: ${res.statusText}`);
   const stock = await res.json();
   return stock;
@@ -54,5 +53,3 @@ client.once("ready", () => {
 });
 
 client.login(process.env.BOT_TOKEN);
-
-startStatusServer(8080);
