@@ -50,6 +50,39 @@ function updateStockInDB(newStock) {
   insertMany(newStock);
 }
 
+function getCurrentNightBloodStockFromDB() {
+  const nightRows = db.prepare("SELECT * FROM night_stock").all();
+  const bloodRows = db.prepare("SELECT * FROM blood_stock").all();
+
+  return {
+    nightStock: nightRows,
+    bloodStock: bloodRows,
+  };
+}
+
+function updateNightBloodStockInDB(newStock) {
+  const deleteNight = db.prepare("DELETE FROM night_stock");
+  const deleteBlood = db.prepare("DELETE FROM blood_stock");
+
+  const insertStmt = db.prepare(`
+    INSERT INTO ${"${type}_stock"} (type, item_id, name, value)
+    VALUES (@type, @item_id, @name, @value)
+  `);
+
+  const insertMany = db.transaction((stock) => {
+    deleteNight.run();
+    deleteBlood.run();
+
+    for (const item of stock.nightStock || [])
+      insertStmt.run({ ...item, type: "night" });
+
+    for (const item of stock.bloodStock || [])
+      insertStmt.run({ ...item, type: "blood" });
+  });
+
+  insertMany(newStock);
+}
+
 function buildStockEmbed(stock) {
   const seeds = (stock.seedsStock || [])
     .map((item) => `${getEmoji(item.item_id)} **${item.name}** x${item.value}`)
@@ -92,6 +125,10 @@ function hasStockChanged(newStock, oldStock) {
   return JSON.stringify(newStock) !== JSON.stringify(oldStock);
 }
 
+function hasNightBloodStockChanged(newStock, oldStock) {
+  return JSON.stringify(newStock) !== JSON.stringify(oldStock);
+}
+
 function normalizeIncomingStock(stock) {
   const normalize = (items, type) =>
     (items || []).map((i) => ({
@@ -105,6 +142,21 @@ function normalizeIncomingStock(stock) {
     seedsStock: normalize(stock.seedsStock, "seed"),
     gearStock: normalize(stock.gearStock, "gear"),
     eggStock: normalize(stock.eggStock, "egg"),
+  };
+}
+
+function normalizeIncomingNightBloodStock(stock) {
+  const normalize = (items, type) =>
+    (items || []).map((i) => ({
+      type,
+      item_id: normalizeName(i.name),
+      name: i.name,
+      value: i.value,
+    }));
+
+  return {
+    nightStock: normalize(stock.nightStock, "night"),
+    bloodStock: normalize(stock.bloodStock, "blood"),
   };
 }
 
@@ -122,6 +174,43 @@ export async function checkStockAndNotify(client, channelId, rawNewStock) {
   const channel = await client.channels.fetch(channelId);
   const embed = buildStockEmbed(newStock);
   const pingLine = generatePingLine(newStock);
+
+  await channel.send({ content: pingLine, embeds: [embed] });
+}
+
+function buildNightBloodStockEmbed(stock) {
+  const night = (stock.nightStock || [])
+    .map((item) => `${getEmoji(item.item_id)} **${item.name}** x${item.value}`)
+    .join("\n");
+
+  const blood = (stock.bloodStock || [])
+    .map((item) => `${getEmoji(item.item_id)} **${item.name}** x${item.value}`)
+    .join("\n");
+
+  return new EmbedBuilder()
+    .setColor(0x8e44ad)
+    .setAuthor({ name: "🌌 GardenBot • Night & Blood Stocks" })
+    .addFields(
+      { name: "🌙 NIGHT STOCK", value: night || "None", inline: true },
+      { name: "🩸 BLOOD STOCK", value: blood || "None", inline: true }
+    );
+}
+
+export async function checkNightBloodStockAndNotify(
+  client,
+  channelId,
+  rawNewStock
+) {
+  const newStock = normalizeIncomingNightBloodStock(rawNewStock);
+  const lastStock = getCurrentNightBloodStockFromDB();
+
+  if (!hasNightBloodStockChanged(newStock, lastStock)) return;
+
+  updateNightBloodStockInDB(newStock);
+
+  const channel = await client.channels.fetch(channelId);
+  const embed = buildNightBloodStockEmbed(newStock);
+  const pingLine = ""; // Optional: Add pings if needed
 
   await channel.send({ content: pingLine, embeds: [embed] });
 }

@@ -1,7 +1,10 @@
 // bot.js
 import { Client, GatewayIntentBits } from "discord.js";
 import { updateLastFetchStatus } from "./src/statusTracker.js";
-import { checkStockAndNotify } from "./src/checkStock.js";
+import {
+  checkStockAndNotify,
+  checkNightBloodStockAndNotify,
+} from "./src/checkStock.js";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
 dotenv.config();
@@ -36,6 +39,11 @@ const scheduleStockCheck = () => {
       try {
         const stock = await fetchLiveStock();
         await checkStockAndNotify(client, CHANNEL_ID, stock);
+        await checkNightBloodStockAndNotify(
+          client,
+          process.env.NIGHT_BLOOD_CHANNEL_ID,
+          stock
+        );
         updateLastFetchStatus(true, "Stock fetched and notified.");
       } catch (err) {
         console.error("❌ Error fetching or notifying stock:", err);
