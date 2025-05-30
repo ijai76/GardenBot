@@ -5,6 +5,7 @@ import { checkStockAndNotify } from "./src/checkStock.js";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
 dotenv.config();
+import { startApiServer } from "./src/api/server.js";
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
@@ -53,3 +54,5 @@ client.once("ready", () => {
 });
 
 client.login(process.env.BOT_TOKEN);
+
+startApiServer();

@@ -44,8 +44,7 @@ function updateStockInDB(newStock) {
     for (const g of stock.gearStock || [])
       insertStmt.run({ ...g, type: "gear" });
 
-    for (const e of stock.eggStock || [])
-      insertStmt.run({ ...e, type: "egg" });
+    for (const e of stock.eggStock || []) insertStmt.run({ ...e, type: "egg" });
   });
 
   insertMany(newStock);
@@ -69,8 +68,8 @@ function buildStockEmbed(stock) {
     .setAuthor({ name: "🌦️ GardenBot • Grow a Garden Stocks" })
     .addFields(
       { name: "🌱 SEEDS STOCK", value: seeds || "None", inline: true },
-      { name: "🚲 GEAR STOCK", value: gear || "None", inline: true },
-      { name: "👣 EGG STOCK", value: egg || "None", inline: true }
+      { name: "🛠️ GEAR STOCK", value: gear || "None", inline: true },
+      { name: "🐣 EGG STOCK", value: egg || "None", inline: true }
     );
 }
 
